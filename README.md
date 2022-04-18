@@ -54,24 +54,21 @@ To run the data acquisition use ` acquire(config: Path, fields: tuple) -> None` 
 acquire(config_path, fields)
 ```
 
-All steps together are shown in `example.py`:
+All steps together are shown in `acquire.py`, specifically:
 ```Python
-from enums import SensorSingleField, SensorDualField
-from pathlib import Path
-from acquire import acquire
+if __name__ == "__main__"
+  fields = (
+      SensorSingleField.TEMPERATURE,
+      SensorSingleField.HUMIDITY,
+      SensorSingleField.PRESSURE,
+      SensorDualField.PM1_0,
+      SensorDualField.PM2_5,
+      SensorDualField.PM10,
+      SensorDualField.PM2_5_ATM,
+  )
+  config_path = Path() / "config.yaml"
 
-fields = (
-    SensorSingleField.TEMPERATURE,
-    SensorSingleField.HUMIDITY,
-    SensorSingleField.PRESSURE,
-    SensorDualField.PM1_0,
-    SensorDualField.PM2_5,
-    SensorDualField.PM10,
-    SensorDualField.PM2_5_ATM,
-)
-config_path = Path() / "config.yaml"
-
-acquire(config_path, fields)
+  acquire(config_path, fields)
 ```
 
 ## Data Format

@@ -4,8 +4,8 @@ from dataclasses import dataclass
 from typing import Optional
 
 from pandas import DataFrame
-from purpleair.channel import Channel
-from purpleair.network import Sensor
+from purpleair.channel import Channel  # type: ignore
+from purpleair.network import Sensor  # type: ignore
 
 
 @dataclass

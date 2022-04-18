@@ -1,6 +1,6 @@
 from pathlib import Path
 
-import h5py
+import h5py  # type: ignore
 import pandas as pd
 
 from handle_data import ChannelData, DataToSave

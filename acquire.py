@@ -5,9 +5,9 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Optional
 
-import reverse_geocoder as rg
+import reverse_geocoder as rg  # type: ignore
 import yaml
-from purpleair.network import Sensor, SensorList
+from purpleair.network import Sensor, SensorList  # type: ignore
 from rich.logging import RichHandler
 from rich.progress import (
     BarColumn,
@@ -34,18 +34,18 @@ def get_data(
     weeks_to_get: int,
     fields: tuple,
     start_date: Optional[datetime.datetime] = None,
-) -> DataToSave:
+) -> Optional[DataToSave]:
     sensor = Sensor(sensor_id)
     data = get_historical_data(sensor, weeks_to_get, start_date=start_date)
-    data = handle_historical_data(sensor, data, fields)
-    if data.channel_A.primary.shape[0] == 0:
+    data_sanitized = handle_historical_data(sensor, data, fields)
+    if data_sanitized.channel_A.primary.shape[0] == 0:
         return None
-    return data
+    return data_sanitized
 
 
-def acquire(config: Path, fields: tuple) -> None:
+def acquire(config_path: Path, fields: tuple) -> None:
     # loading the configuration
-    with open(config, "r") as f:
+    with open(config_path, "r") as f:
         config = yaml.safe_load(f)
 
         state = config["State"]
@@ -64,6 +64,7 @@ def acquire(config: Path, fields: tuple) -> None:
     df = df[["lat", "lon"]]
     df = df.dropna()
     lats, lons = df.lat.values, df.lon.values
+
     locations = rg.search([(lat, lon) for lat, lon in zip(lats, lons)])
     indices = [idx for idx, loc in enumerate(locations) if loc["admin1"] == state]
     sensor_ids = [int(idx) for idx in df.index.values[indices]]

@@ -4,7 +4,7 @@ from pathlib import Path
 from queue import Queue
 from threading import Event, Thread
 
-import h5py
+import h5py  # type: ignore
 
 from handle_data import DataToSave
 import pandas as pd
@@ -56,7 +56,7 @@ class HDFWriter(Thread):
         super(HDFWriter, self).__init__()
         self.path = path
 
-        self.queue = Queue()
+        self.queue: Queue[DataToSave] = Queue()
         self.active = Event()
 
     def run(self):
