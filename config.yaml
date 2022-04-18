@@ -1,0 +1,17 @@
+# which state to look in
+State: "California"
+
+PurpleAir:
+  # number of threads simultanously calling the API
+  workers: 10
+  # nr of weeks to get at once from the API
+  weeks_to_get_bunches: 5
+  # date range to get data in
+  start_date: 2021-01-01T00:00:00
+  stop_date: 2022-01-01T00:00:00
+  # how many sensors to grab, comment line to grab all sensors
+  sensors_to_get: 20
+
+HDF:
+  # HDF filename where data is saved
+  filename: "purple_air_data.h5"
